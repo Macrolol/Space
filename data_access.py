@@ -26,6 +26,7 @@ class FieldMetadata:
     arraysize: str
     xtype: str
     ref: str
+    dtype: pl.DataType = None
 
     @classmethod
     def from_field(cls, field: ap.io.votable.tree.Field):
@@ -40,9 +41,27 @@ class FieldMetadata:
             ref=field.ref,
         )
 
+    def to_polars_dtype(self) -> pl.DataType:
+        if self.datatype == 'char':
+            return pl.Utf8
+        elif self.datatype == 'double':
+            return pl.Float64
+        elif self.datatype == 'float':
+            return pl.Float32
+        elif self.datatype == 'int':
+            return pl.Int32
+        elif self.datatype == 'long':
+            return pl.Int64
+        elif self.datatype == 'short':
+            return pl.Int16
+        elif self.datatype == 'boolean':
+            return pl.Boolean
+        else:
+            return pl.Utf8
+
     def to_json(self) -> str:
         return json.dumps({key: value if key != 'unit' else repr(value) for key, value in vars(self).items()})
-    
+
     @classmethod
     def from_json(cls, json_str: str):
         json_dict = json.loads(json_str)
@@ -52,6 +71,7 @@ class FieldMetadata:
             json_dict['unit'] = None
 
         return cls(**json_dict)
+    
 
 
 @dataclass
@@ -61,6 +81,7 @@ class TableMetadata:
     title: str
     description: str
     fields: List[FieldMetadata]
+    exception: Optional[Exception] = None
 
     @classmethod
     def from_cone_search_result(cls, resource: vo.registry.regtap.RegistryResource, result: vo.dal.scs.SCSResults):
@@ -80,6 +101,40 @@ class TableMetadata:
         with open(path, 'w') as f:
             f.write(self.to_json())
 
+    def empty_polars_frame(self) -> pl.DataFrame:
+        """ Convert the metadata to an empty polars frame. 
+        
+        This can be used to create a polars DataFrame with the correct column
+        names and types.
+
+        More information about polars can be found here:
+        https://pola-rs.github.io/polars-book/user-guide/dataframe.html
+        """
+        return pl.DataFrame(
+            {
+                field.name: pl.Series(name=field.name, dtype=field.to_polars_dtype())
+                for field in self.fields
+            }
+        )
+
+    def __bool__(self):
+        return self.exception is None
+        
+    def check_schema(self, test_frame: pl.DataFrame) -> pl.DataFrame:
+        """ Attempt to coerce the schema of the given DataFrame to match the metadata.
+        
+        If the schema of the DataFrame is not compatible with the metadata, an
+        exception will be added to the metadata.
+        """
+        try:
+            return self.empty_polars_frame().extend(test_frame)
+        except Exception as e:
+            if self.exception is None:
+                self.exception = e
+            else:
+                self.exception = (self.exception, e)
+        return test_frame
+
     @classmethod
     def from_json_string(cls, json_str: str) -> 'TableMetadata':
         json_dict = json.loads(json_str)
@@ -97,11 +152,27 @@ class TableMetadata:
             return cls.from_json_file(json_or_path_to_json)
         else:
             return cls.from_json_string(json_or_path_to_json)
+        
+    @classmethod
+    def load_failure(cls, e: Exception) -> 'TableMetadata':
+        return cls(
+            access_url='Failed to load',
+            name='Failed to load',
+            title='Failed to load',
+            description='Failed to load',
+            fields=[],
+            exception=e,
+        )
+    
+    
 
-@dataclass
 class Table:
-    metadata: TableMetadata
-    data: pl.DataFrame
+    DEFAULT_METADATA_FILE_NAME = 'metadata.json'
+    DEFAULT_DATA_FILE_NAME = 'data.parquet'
+
+    def __init__(self, metadata: TableMetadata, data: pl.DataFrame):
+        self.metadata = metadata
+        self.data = data
 
     @classmethod
     def from_cone_search(cls, resource: vo.registry.regtap.RegistryResource, coord, radius):
@@ -122,30 +193,53 @@ class Table:
     @property
     def fields(self):
         return self.metadata.fields
-    
+
+
+
+
     def save(self, folder_path: str):
         """ Save the data and metadata in a folder """
-        self.metadata.save(folder_path + '/metadata.json')
-        self.data.write_parquet(folder_path + '/data.parquet')
+        os.makedirs(folder_path, exist_ok=True)
+        self.metadata.save(os.path.join(folder_path, self.DEFAULT_METADATA_FILE_NAME))
+        self.data.write_parquet(os.path.join(folder_path, self.DEFAULT_DATA_FILE_NAME))
+
+
+
+
 
     @classmethod
     def load(cls, folder_path: str) -> 'Table':
-        try:
-            metadata = TableMetadata.from_json_file(folder_path + '/metadata.json')
-        except Exception as e:
-            metadata = None
-        try:
-            data = pl.scan_parquet(folder_path + '/data.parquet')
-        except Exception as e:
-            data = None
+        """ Load the data and metadata from a folder """
+        metadata = TableMetadata.from_json_file(os.path.join(folder_path, cls.DEFAULT_METADATA_FILE_NAME))
         
+        if metadata:
+            data = metadata.empty_polars_frame()
+        try:
+            raw_data = pl.read_parquet(os.path.join(folder_path, cls.DEFAULT_DATA_FILE_NAME))
+            data = metadata.check_schema(raw_data)
+
+        except FileNotFoundError as e:
+            pass
+
         return cls(metadata, data)
-    
+
     def __repr__(self):
         return f'Table(name={self.name},\ntitle={self.metadata.title} description={self.description})'
-    
 
 
+def tap_query(query: str, url: str='http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap') -> Table:
+    """ Perform a TAP query. """
+    service = dal.TAPService(url)
+    result = service.search(query)
+    return Table(
+        metadata=TableMetadata(
+            access_url=url,
+            name='TAP Query',
+            title='TAP Query',
+            description='TAP Query',
+            fields=[FieldMetadata.from_field(field) for field in result.fielddescs],
+        ),
+        data=pl.DataFrame(data=[dict(row) for row in result]))
 
 
 def cone_search(center: ap.coordinates.SkyCoord, radius: u.Quantity, waveband: str='optical', verbose: bool = False) -> List[Table]:
@@ -183,8 +277,15 @@ def load_tables_from(folder_path: str) -> List[Table]:
 
 def yield_tables_from(directory: str) -> Iterator[Table]:
     """ Yield a list of tables from a folder. """
-    for folder in os.listdir(directory):
-        yield load_table(directory + '/' + folder)
+    for dir_entry in os.scandir(directory):
+        if dir_entry.is_dir():
+            if any([f.name == 'metadata.json' or f.name == 'data.parquet' for f in os.scandir(dir_entry.path)]):
+                yield load_table(dir_entry.path)
+            
+            if any([f.is_dir() for f in os.scandir(dir_entry.path)]):
+                for table in yield_tables_from(dir_entry.path):
+                    yield table
+
 
 
 def save_table(table: Table, folder_path: str):
@@ -272,6 +373,7 @@ def _match_table(table: Table,
                  search_value: Union[str, pl.Expr, Callable[[Table], Union[bool, Table]]]) -> Union[bool, Table]:
     """ Match a table against a search parameter. As described in the docstring
     of `search_tables`. """
+    # print(search_key, search_value)
     search_key = search_key.casefold()
     if search_key == 'filter':
         if isinstance(search_value, pl.Expr):
@@ -285,20 +387,25 @@ def _match_table(table: Table,
     search_in = None
 
     search_key, _, suffix = search_key.rpartition('_')
-
-    if search_key == 'name':
-        search_in = table.name
-    elif search_key == 'title':
-        search_in = table.metadata.title
-    elif search_key == 'description':
-        search_in = table.metadata.description
-    elif search_key.startswith('field'):
-        _, _, field_attr = search_key.rpartition('_')
-        try:
-            search_in = [getattr(field, field_attr) for field in table.fields]
-        except AttributeError:
-            raise ValueError(f'Invalid field attribute: {field_attr}')
-    else:
+    if not all([search_key, suffix]):
+        search_key = search_key or suffix
+        suffix = None
+    try:
+        if search_key == 'name':
+            search_in = table.name
+        elif search_key == 'title':
+            search_in = table.metadata.title
+        elif search_key == 'description':
+            search_in = table.metadata.description
+        elif search_key.startswith('field'):
+            _, _, field_attr = search_key.rpartition('_')
+            try:
+                search_in = [getattr(field, field_attr) for field in table.fields]
+            except AttributeError:
+                raise ValueError(f'Invalid field attribute: {field_attr}')
+        else:
+            raise ValueError(f'Invalid search parameter: {search_key}')
+    except AttributeError:
         raise ValueError(f'Invalid search parameter: {search_key}')
 
     if suffix == 'regex':
