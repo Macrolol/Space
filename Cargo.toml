@@ -1,0 +1,13 @@
+[package]
+name = "Space"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = { version = "0.11.15", features = ["blocking","json"] }
+polars = "0.27.2"
+tokio = { version = "1.26.0", features = ["full"] }
+quick-xml = "0.28.1"
+mockito = "1.0.1"

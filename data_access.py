@@ -215,7 +215,7 @@ class Table:
         if metadata:
             data = metadata.empty_polars_frame()
         try:
-            raw_data = pl.read_parquet(os.path.join(folder_path, cls.DEFAULT_DATA_FILE_NAME))
+            raw_data = pl.read_parquet(os.path.join(folder_path, cls.DEFAULT_DATA_FILE_NAME), use_pyarrow=True)
             data = metadata.check_schema(raw_data)
 
         except FileNotFoundError as e:
@@ -421,7 +421,7 @@ def _match_table_regex(search_in: Union[str, List[str]], search_for: str) -> boo
     """ Match a table against a search parameter that is a regular expression. """
     if isinstance(search_in, list):
         for value in search_in:
-            if re.match(search_for, value):
+            if re.search(search_for, value):
                 return True
         return False
     else:
