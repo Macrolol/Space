@@ -1,10 +1,11 @@
 extern crate reqwest;
 use std::boxed::Box;
 use std::fmt::Display;
-use std::str::FromStr;
-use quick_xml::reader::Reader;
+use std::io::Read;
+use quick_xml::reader::{Reader, Span};
 use quick_xml::events::{Event, BytesStart};
 use std::option::Option;
+
 
 type Name = String;
 
@@ -29,37 +30,87 @@ impl XmlAttribute {
         }
     }
 
-    fn read_from<'a>(event: BytesStart<'a>, reader: &'a mut Reader<&'a [u8]>) -> Vec<XmlAttribute> {
+    fn read_from<'a>(event: BytesStart<'a>) -> Vec<XmlAttribute> {
         event.attributes()
              .map(|attr| {
             let attr = attr.unwrap();
             XmlAttribute {
-                name: format!("{:?}", attr.key),
-                value: format!("{:?}", attr.value)
+                name: String::from_utf8(attr.key.0.to_vec()).unwrap(),
+                value: String::from_utf8(attr.value.to_vec()).unwrap(),
             }
         }).collect()
     }
 }
 
+type XmlText = String;
+
 #[derive(Clone)]
 pub enum XmlElement<'a>{
-    Root(Vec<XmlElement<'a>>),
-    Branch{
-        name: Name,
-        attrs: Vec<XmlAttribute>,
-        children: Vec<XmlElement<'a>>
-    },
-    Leaf{
-        name: Name,
-        attrs: Vec<XmlAttribute>,
-        value: Option<String>,
-    },
-    SomethingElse(Event<'a>)
+    OpenTag(Name, Vec<XmlAttribute>),
+    EmptyTag(Name, Vec<XmlAttribute>),
+    Text(XmlText),
+    SomethingElse(Event<'a>),
+    ElementEnd(Name),
+    End
 }
 
 
+impl <'a> XmlElement<'a> {
+    fn parse_event(event: Event) -> Result<XmlElement, XmlError> {
+        match event {
+            Event::Empty(open) => {
+                Ok(XmlElement::EmptyTag(
+                    String::from_utf8(open.name().0.to_vec()).unwrap(),
+                    XmlAttribute::read_from(open.into_owned())
+                ))
+            }Event::Start(open) => {
+                Ok(XmlElement::OpenTag(
+                    String::from_utf8(open.name().0.to_vec()).unwrap(),
+                    XmlAttribute::read_from(open.into_owned())
+                ))
+            },
+            Event::Text(text) => {
+                Ok(XmlElement::Text(String::from_utf8(text.to_vec()).unwrap()))
+            },
+            Event::End(close) => Ok(XmlElement::ElementEnd(String::from_utf8(close.name().0.to_vec()).unwrap())),
+            Event::Eof => Ok(XmlElement::End),
+            _ => Err(XmlError::StrangeEvent(event.into_owned())),
+        }
+    }
+}
 
-#[derive(Debug)]
+impl <'a> Display for XmlElement<'a> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            XmlElement::OpenTag(name, attrs) => {
+                match attrs.len() {
+                    0 => write!(f, "<{}>", name),
+                    _ => write!(f, "<{} {}>", name, attrs.iter().map(|attr| attr.to_string()).collect::<Vec<String>>().join(" "))
+                }
+            },
+            XmlElement::EmptyTag(name, attrs) => {
+                match attrs.len() {
+                    0 => write!(f, "<{}/>", name),
+                    _ => write!(f, "<{} {}/>", name, attrs.iter().map(|attr| attr.to_string()).collect::<Vec<String>>().join(" "))
+                }
+            },
+            XmlElement::Text(text) => {
+                write!(f, "{}", text)
+            },
+            XmlElement::SomethingElse(event) => {
+                write!(f, "{}", String::from_utf8(event.to_vec()).unwrap())
+            },
+            XmlElement::ElementEnd(name) => {
+                write!(f, "</{}>", name)
+            },
+            XmlElement::End => {
+                write!(f, "End of XML")
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
 pub enum XmlError<'a>{
     EndOfXml,
     StrangeEvent(Event<'a>),
@@ -77,149 +128,219 @@ impl Display for XmlError<'_> {
         }
     }
 }
-
 impl std::error::Error for XmlError<'_> {}
 
-impl XmlElement<'_> {
-    fn read_from(reader: &mut Reader<&[u8]>) -> Result<Self, Box<dyn std::error::Error>> {
-        let event = reader.read_event().unwrap();
-        let mut buf = Vec::new();
-        match event {
-            Event::Start(e) => {
-                let name = String::from(e.name().0.iter().collect());
-                let attrs = XmlAttribute::read_from(e, reader);
-                loop {
-                    let read = match reader.read_event()? {
-                        Event::Start(e) => Ok(XmlElement::Branch {
-                                name,
-                                attrs,
-                                children: Self::read_children(reader).iter()
-                                                                        .filter(|r| match r {
-                                                                            Ok(e) => true,
-                                                                            Err(e) => match e.downcast_ref() {
-                                                                                Some(XmlError::EndOfXml) => false,
-                                                                                _ => true
-                                                                                }
-                                                                        })
-                                                                        .map(|r|{
-                                                                            match r {
-                                                                                Ok(e) => Some(e.to_owned()),
-                                                                                Err(e) => match e.downcast_ref() {
-                                                                                    Some(xmle) =>
-                                                                                        match xmle {
-                                                                                            XmlError::EndOfXml => None,
-                                                                                            XmlError::StrangeEvent(e) | XmlError::InvalidStartingEvent(e) => Some(XmlElement::SomethingElse(e.to_vec())),
-                                                                                            XmlError::ReadError(e) => Some(XmlElement::SomethingElse(e.to_string().as_bytes().to_vec())),
-                                                                                            
-                                                                                        },
-                                                                                    None => None
-                                                                                }
-                                                                            }
-                                                                        })
-                                                                        .filter(|e| e.is_some())
-                                                                        .map(|e| e.unwrap())
-                                                                        .collect()
-                        }),
-                        Event::End(e) => Err(Box::new(XmlError::EndOfXml)),
-                        Event::Eof => Err(Box::new(XmlError::EndOfXml)),
-                        e => Err(Box::new(XmlError::StrangeEvent(e)))
-                    };
-                    match read {
-                        Ok(e) => return Ok(e),
-                        Err(e) => return Err(e)
+#[derive(Clone)]
+pub struct XmlDocument<'a>(Vec<XmlElement<'a>>);
+
+impl <'a> From<&mut Reader<&'a[u8]>> for XmlDocument<'a>{
+    fn from(reader: &mut Reader<&'a[u8]>) -> Self {
+        let mut events = Vec::new();
+        loop {
+            events.push(
+                match reader.read_event() {
+                Err(e) => {
+                    panic!("Error: {:?}", {e});
+                }
+                Ok(event) => {
+                    match XmlElement::parse_event(event){
+                        Err(e) => {
+                            panic!("Error: {:?}", {e});
+                        }
+                        Ok(elem) => match elem {
+                                XmlElement::End => break,
+                                _ => elem
+                            },
                     }
                 }
-            },
-            Event::End(e) => Ok({
-                XmlElement::Leaf {
-                    name: String::from(e.name().0.iter().collect()),
-                    attrs: Vec::new(),
-                    value: None
-                }
-            }),
-            e => Err(Box::new(XmlError::StrangeEvent(e.)))
+            });
+        };
+        XmlDocument(events.to_owned())
+    }
+}
+
+
+impl <'a> XmlDocument<'a> {
+    pub fn name(&self) -> Option<&str> {
+        match self.0.first() {
+            Some(XmlElement::OpenTag(name, _)) => Some(name),
+            Some(XmlElement::EmptyTag(name, _)) => Some(name),
+            _ => None
         }
     }
 
-    fn read_children(reader: &mut Reader<&[u8]>) -> Vec<Result<Self, Box<dyn std::error::Error>>> {
-        let mut children: Vec<Result<Self, Box<dyn std::error::Error>>> = Vec::new();
-        loop {
-            let event = reader.read_event();
-            match event {
-                Err(e) => {
-                    children.push(Err(Box::new(XmlError::ReadError(e))));
+    pub fn depth(&self) -> usize {
+        let mut depth = 0;
+        let mut max_depth = 0;
+        self.0.iter().for_each(|e| {
+            match e {
+                XmlElement::OpenTag(_, _) => {
+                    depth += 1;
+                    if depth > max_depth {
+                        max_depth = depth;
+                    }
                 },
-                Ok(e) => {
-                    match e {
-                        Event::Start(e) => {
-                            children.push(Self::read_from(reader));
+                XmlElement::ElementEnd(_) => {
+                    depth -= 1;
+                },
+                _ => {}
+            }
+        });
+        max_depth.to_owned()
+    }
+
+    pub fn flatten(&'a self) -> impl Iterator<Item=&XmlElement<'a>> {
+        XmlIterator::new(self)
+    }
+
+    pub fn get_element_by_name(&self, name: &str) -> Option<XmlElement> {
+        self.flatten().find_map(|el|{
+            match el {
+                XmlElement::OpenTag(n, _) => {
+                    if n == name {
+                        Some(el.to_owned())
+                    } else {
+                        None
+                    }
+                },
+                XmlElement::EmptyTag(n, _) => {
+                    if n == name {
+                        Some(el.to_owned())
+                    } else {
+                        None
+                    }
+                },
+                _ => None
+            }
+        })
+    }
+
+    pub fn get_element_at_index(&'a self, index: usize) -> Option<XmlElement<'a>> {
+        self.flatten().nth(index).cloned()
+    }
+
+    pub fn iter_subtrees(&self) -> impl Iterator<Item=XmlDocument> {
+        XmlDocIterator::new(self)
+    }
+
+    pub fn get_subtree_by_name(&self, name: &str) -> Option<XmlDocument> {
+        self.iter_subtrees().find_map(|doc|{
+            match doc.name() {
+                Some(n) => {
+                    if n == name {
+                        Some(doc)
+                    } else {
+                        None
+                    }
+                },
+                None => None
+            }
+        })
+    }
+
+    
+}
+
+impl Display for XmlDocument<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let write_result = self.0.iter().find_map(|e| {
+            match write!(f, "{}", e) {
+                Err(e) => return Some(e),
+                _ => {None}
+            }
+        });
+
+        match write_result {
+            Some(e) => Err(e),
+            None => Ok(())
+        }
+    }
+} 
+
+pub struct XmlIterator<'a>{
+    xml: &'a XmlDocument<'a>,
+    index: usize,
+}
+
+impl <'a> XmlIterator<'a> {
+    pub fn new(xml: &'a XmlDocument<'a>) -> Self {
+        XmlIterator {
+            xml,
+            index: 0
+        }
+    }
+}
+
+impl <'a> Iterator for XmlIterator<'a> {
+    type Item = &'a XmlElement<'a>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let item = self.xml.0.get(self.index);
+        self.index += 1;
+        item
+    }
+}
+
+pub struct XmlDocIterator<'a>{
+    xml: &'a XmlDocument<'a>,
+    index: usize,
+}
+
+impl <'a> XmlDocIterator<'a> {
+    pub fn new(xml: &'a XmlDocument<'a>) -> Self {
+        XmlDocIterator {
+            xml,
+            index: 0
+        }
+    }
+}
+
+
+impl <'a> Iterator for XmlDocIterator<'a> {
+    type Item = XmlDocument<'a>;
+    fn next(&mut self) -> Option<Self::Item> {
+        let start = self.xml.get_element_at_index(self.index)?;
+        match start {
+            XmlElement::OpenTag(_, _) => {
+                let mut depth = 1;
+                let mut end_index = self.index;
+                for (i, el) in self.xml.0.iter().enumerate().skip(self.index + 1) {
+                    match el {
+                        XmlElement::OpenTag(_, _) => {
+                            depth += 1;
                         },
-                        Event::End(e) => break,
-                        Event::Eof => break,
+                        XmlElement::ElementEnd(_) => {
+                            depth -= 1;
+                            if depth == 0 {
+                                end_index = i;
+                                break;
+                            }
+                        },
                         _ => {}
                     }
                 }
-            }
-        };
-        Vec::from_iter(children.iter()
-                .map(|r| {
-                    match r {
-                            Ok(e) => Ok(e.to_owned()),
-                            Err(e) => Err(e.to_owned())
-                        }
-                    }))
-    }
-}
-    
-
-
-pub struct XmlDocument {
-    raw: String,
-    buffer: Vec<u8>
-}
-
-impl XmlDocument {
-    
-    fn offset(&self) -> usize {
-        self.buffer.len()
-    }
-
-    fn unread(&self) -> &str{
-        &self.raw[self.offset()..]
-    }
-
-    fn reader(&self) -> Reader<&[u8]> {
-        Reader::from_str(self.unread())
-    }
-
-}
-
-impl Iterator for XmlDocument {
-    type Item = XmlElement;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        loop {}
+                let subtree = self.xml.0[self.index..end_index+1].to_owned();
+                self.index = end_index + 1;
+                Some(XmlDocument(subtree))
+            },
+            XmlElement::EmptyTag(_, _) => {
+                self.index += 1;
+                Some(XmlDocument(vec![start.to_owned()]))
+            },
+            _ => None
+        }
     }
 }
 
-impl<'a> FromStr for XmlDocument {
-    type Err = Box<dyn std::error::Error>;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(Self {
-            raw: s.to_owned(),
-            buffer: Vec::new()
-        })
-    }
-}
+pub trait XmlEndpoint<'a>{
 
-pub trait XmlEndpoint{
-
-    fn get_string_response(&self) -> Result<String, Box<dyn std::error::Error>>;
-    fn get_xml_response(&self) -> Result<XmlDocument, Box<dyn std::error::Error>> {
+    fn get_string_response(&'a mut self) -> Result<&'a str, Box<dyn std::error::Error>>;
+    fn get_xml_response(&'a mut self) -> Result<XmlDocument<'a>, Box<dyn std::error::Error>> {
         let response = self.get_string_response()?;
-        let e = Reader::from_str(response.as_str());
-        XmlDocument::from_str(response.as_str())
+        let reader = Reader::from_str(response);
+        let doc = XmlDocument::from(&mut reader.to_owned());
+        Ok(doc.to_owned())
     }
 }
 
@@ -228,43 +349,220 @@ mod tests {
     use super::*;
     use mockito::Server;
     use mockito::Matcher;
+    
 
-    #[tokio::test]
-    async fn test_get_xml_response() {
-        let mut server = Server::new();
-        let m = Server::mock(&mut server, "GET", "/");
-        m.match_header("accept", "application/xml")
-            .with_status(200)
-            .with_body("<root><child>value</child></root>")
-            .create();
-
-
-        let endpoint = XmlEndpointImpl::new(server.url());
-        let response = endpoint.get_xml_response();
-        assert!(response.is_ok());
-        let xml = response.unwrap();
-
-    }
 
     struct XmlEndpointImpl {
         url: String,
+        responses: Vec<String>
     }
 
-    impl XmlEndpointImpl {
+    impl XmlEndpointImpl{
         pub fn new(url: String) -> Self {
             Self {
                 url,
+                responses: Vec::new()
             }
         }
     }
 
-    impl XmlEndpoint for XmlEndpointImpl {
-        fn get_string_response(&self) -> Result<String, Box<dyn std::error::Error>> {
+    impl XmlEndpoint<'_> for XmlEndpointImpl {
+        fn get_string_response(&mut self) -> Result<&str, Box<dyn std::error::Error>> {
             let client = reqwest::blocking::Client::new();
-            let response = client.get(self.url.clone())
-                .send();
-            Ok(response.unwrap().text().unwrap())
+            let response = client.get(self.url.to_owned())
+                .send()?;
+            let text = response.text()?;
+            println!("Response: {}", text);
+            self.responses.push(text);
+            Ok(self.responses.last().unwrap())
         }
     }
+
+    fn mock_xml(server: &mut Server, xml: &[u8], endpoint: &str,) ->  mockito::Mock {
+        Server::mock(server, "GET", endpoint)
+            .with_status(200)
+            .with_header("content-type", "text/xml")
+            .with_body(xml)
+            .create()
+    }
+        
+    #[derive(Clone, Debug)]
+    enum XmlTest {
+        StrTest{
+            xml: &'static [u8],
+            endpoint: &'static str,
+            expected: &'static str
+        },
+        PtrTest{
+            xml: &'static [u8],
+            endpoint: &'static str,
+            expected: usize
+        }
+    }
+
+
+
+    async fn depth_test(test: XmlTest) {
+        match test {
+            XmlTest::PtrTest {xml, endpoint, expected} =>{
+            let mut server = Server::new();
+            let _mock = mock_xml(&mut server, xml, endpoint);
+            let url = format!("{}{}", server.url(), endpoint);
+            tokio::task::spawn_blocking(move ||{
+                    let mut endpoint = XmlEndpointImpl::new(url);
+                    match endpoint.get_xml_response() {
+                        Ok(doc) => {
+                            println!("Ok: {}", doc.to_string());
+                            println!("Depth: {}", doc.depth());
+                            assert_eq!(doc.depth(), expected);
+                        },
+                        Err(e) => {
+                            println!("Error: {}", e);
+                            assert!(false);
+                        }
+                    }
+                }).await.unwrap();
+            },
+            XmlTest::StrTest {xml, endpoint, expected} =>{ assert!(false, "WRONG TYPE OF TEST"); }
+        }
+        
+    }
+
+    #[tokio::test]
+    async fn run_depth_test() {
+        let depth_tests = vec![
+            XmlTest::PtrTest {
+                xml: b"",
+                endpoint: "/depth",
+                expected: 0
+            },
+            XmlTest::PtrTest {
+                xml: b"<root>value</root>",
+                endpoint: "/depth",
+                expected: 1
+            },
+            XmlTest::PtrTest {
+                xml: b"<root><child>value</child></root>",
+                endpoint: "/depth",
+                expected: 2
+            },
+            XmlTest::PtrTest {
+                xml: b"<root><child><child>value</child></child></root>",
+                endpoint: "/depth",
+                expected: 3
+            },
+            XmlTest::PtrTest {
+                xml: b"<root><child><child><child>value</child></child></child></root>",
+                endpoint: "/depth",
+                expected: 4
+            },
+            XmlTest::PtrTest {
+                xml: b"<root><child><child><child><child>value</child></child></child></child></root>",
+                endpoint: "/depth",
+                expected: 5
+            }    
+        ];
+
+        for test in depth_tests {
+            depth_test(test).await;
+        }
+    }
+
+    async fn get_subtree_by_name_test(test: XmlTest){
+        let target = "target";
+        match test {
+            XmlTest::StrTest {xml, endpoint, expected} =>{
+                let mut server = Server::new();
+                let _mock = mock_xml(&mut server, xml, endpoint);
+                let url = format!("{}{}", server.url(), endpoint);
+                tokio::task::spawn_blocking(move ||{
+                        let mut endpoint = XmlEndpointImpl::new(url);
+                        match endpoint.get_xml_response() {
+                            Ok(doc) => {
+                                println!("Ok: {}", doc.to_string());
+                                match doc.get_subtree_by_name(target) {
+                                    Some(subtree) => {
+                                        println!("Subtree: {}", subtree.to_string());
+                                        assert_eq!(doc.get_subtree_by_name(target).unwrap().to_string(), expected);
+                                    },
+                                    None => {
+                                        println!("Subtree not found");
+                                        assert!(false);
+                                    }
+                                }
+                                
+                            },
+                            Err(e) => {
+                                println!("Error: {}", e);
+                                assert!(false);
+                            }
+                        }
+                    }).await.unwrap();
+            },
+            _ =>{ assert!(false, "WRONG TYPE OF TEST"); }
+        }
+    }
+
+
+    #[tokio::test]
+    async fn run_get_subtree_by_name_tests(){
+        let get_subtree_by_name_tests = vec![
+            XmlTest::StrTest {
+                xml: b"<target><child>value</child></target>",
+                endpoint: "/subtree",
+                expected: "<target><child>value</child></target>"
+            },
+            XmlTest::StrTest {
+                xml: b"<root><target>value</target></root>",
+                endpoint: "/subtree",
+                expected: "<target>value</target>"
+            },
+            XmlTest::StrTest {
+                xml: b"<root><target><child>value</child></target></root>",
+                endpoint: "/subtree",
+                expected: "<target><child>value</child></target>"
+            },
+            XmlTest::StrTest {
+                xml: b"<root><target><child>value1</child></target><target>value2</target></root>",
+                endpoint: "/subtree",
+                expected: "<target><child>value1</child></target>"
+            },
+            XmlTest::StrTest {
+                xml: b"<root><target><child>value1</child></target><target><child>value2</child></target></root>",
+                endpoint: "/subtree",
+                expected: "<target><child>value1</child></target>"
+            },
+            XmlTest::StrTest {
+                xml: b"<root><target><child>value1</child></target><target><child>value2</child></target><target><child>value3</child></target></root>",
+                endpoint: "/subtree",
+                expected: "<target><child>value1</child></target>"
+            },
+            XmlTest::StrTest {
+                xml: b"<root><targetish><child>value1</child></targetish><target><child>value2</child></target><target><child>value3</child></target><target><child>value4</child></target></root>",
+                endpoint: "/subtree",
+                expected: "<target><child>value2</child></target>"
+            },
+            XmlTest::StrTest {
+                xml: b"<root><not><child>value1</child></not><target><child>value2</child><target><child>value3</child></target></target><target><child>value4</child></target><target><child>value5</child></target></root>",
+                endpoint: "/subtree",
+                expected: "<target><child>value2</child><target><child></target>"
+            },
+            XmlTest::StrTest {
+                xml: b"<root><target><child>value1</child></target><target><child>value2</child></target><target><child>value3</child></target><target><child>value4</child></target><target><child>value5</child></target><target><child>value6</child></target></root>",
+                endpoint: "/subtree",
+                expected: "<target><child>value1</child></target>"
+            },
+            XmlTest::StrTest {
+                xml: b"<root><target><child>value1</child></target><target><child>value2</child></target><target><child>value3</child></target><target><child>value4</child></target><target><child>value5</child></target><target><child>value6</child></target><target><child>value7</child></target></root>",
+                endpoint: "/subtree",
+                expected: "<target><child>value1</child></target>"
+            }
+        ];
+        for test in get_subtree_by_name_tests {
+            get_subtree_by_name_test(test).await;
+        }
+    }
+
+
 }
 
