@@ -1,0 +1,1715 @@
+{
+  "type": "Struct",
+  "fields": {
+    "@attributeFormDefault": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": false,
+      "type": "String",
+      "count": 1,
+      "samples": {
+        "values": [
+          "unqualified"
+        ],
+        "is_exaustive": true
+      },
+      "min_max_length": {
+        "min": 11,
+        "max": 11
+      }
+    },
+    "@elementFormDefault": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": false,
+      "type": "String",
+      "count": 1,
+      "samples": {
+        "values": [
+          "unqualified"
+        ],
+        "is_exaustive": true
+      },
+      "min_max_length": {
+        "min": 11,
+        "max": 11
+      }
+    },
+    "@targetNamespace": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": false,
+      "type": "String",
+      "count": 1,
+      "samples": {
+        "values": [
+          "http://www.ivoa.net/xml/VOResource/v1.0"
+        ],
+        "is_exaustive": true
+      },
+      "min_max_length": {
+        "min": 39,
+        "max": 39
+      }
+    },
+    "@version": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": false,
+      "type": "String",
+      "count": 1,
+      "samples": {
+        "values": [
+          "1.1+Erratum-1"
+        ],
+        "is_exaustive": true
+      },
+      "min_max_length": {
+        "min": 13,
+        "max": 13
+      }
+    },
+    "@xmlns": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": false,
+      "type": "String",
+      "count": 1,
+      "samples": {
+        "values": [
+          "http://www.w3.org/2001/XMLSchema"
+        ],
+        "is_exaustive": true
+      },
+      "min_max_length": {
+        "min": 32,
+        "max": 32
+      }
+    },
+    "@xmlns:vm": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": false,
+      "type": "String",
+      "count": 1,
+      "samples": {
+        "values": [
+          "http://www.ivoa.net/xml/VOMetadata/v0.1"
+        ],
+        "is_exaustive": true
+      },
+      "min_max_length": {
+        "min": 39,
+        "max": 39
+      }
+    },
+    "@xmlns:vr": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": false,
+      "type": "String",
+      "count": 1,
+      "samples": {
+        "values": [
+          "http://www.ivoa.net/xml/VOResource/v1.0"
+        ],
+        "is_exaustive": true
+      },
+      "min_max_length": {
+        "min": 39,
+        "max": 39
+      }
+    },
+    "@xmlns:xs": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": false,
+      "type": "String",
+      "count": 1,
+      "samples": {
+        "values": [
+          "http://www.w3.org/2001/XMLSchema"
+        ],
+        "is_exaustive": true
+      },
+      "min_max_length": {
+        "min": 32,
+        "max": 32
+      }
+    },
+    "annotation": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": false,
+      "type": "Struct",
+      "fields": {
+        "appinfo": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": false,
+          "may_be_duplicate": false,
+          "type": "Struct",
+          "fields": {
+            "schemaName": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "$text": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 1,
+                  "samples": {
+                    "values": [
+                      "VOResource"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "min_max_length": {
+                    "min": 10,
+                    "max": 10
+                  }
+                }
+              },
+              "context": {
+                "count": 1
+              }
+            },
+            "schemaPrefix": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "$text": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 1,
+                  "samples": {
+                    "values": [
+                      "xs"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "min_max_length": {
+                    "min": 2,
+                    "max": 2
+                  }
+                }
+              },
+              "context": {
+                "count": 1
+              }
+            },
+            "targetPrefix": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "$text": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 1,
+                  "samples": {
+                    "values": [
+                      "vr"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "min_max_length": {
+                    "min": 2,
+                    "max": 2
+                  }
+                }
+              },
+              "context": {
+                "count": 1
+              }
+            }
+          },
+          "context": {
+            "count": 1
+          }
+        },
+        "documentation": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": false,
+          "may_be_duplicate": false,
+          "type": "Struct",
+          "fields": {
+            "$text": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "String",
+              "count": 1,
+              "samples": {
+                "values": [
+                  "An XML Schema describing a resource to be used in the Virtual \n        Observatory Project.\n\n        Please see http://www.ivoa.net/documents/latest/VOResource.html\n        for further  information on the standard governing this\n        schema."
+                ],
+                "is_exaustive": true
+              },
+              "min_max_length": {
+                "min": 244,
+                "max": 244
+              }
+            }
+          },
+          "context": {
+            "count": 1
+          }
+        }
+      },
+      "context": {
+        "count": 1
+      }
+    },
+    "complexType": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": true,
+      "type": "Struct",
+      "fields": {
+        "@abstract": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": true,
+          "may_be_duplicate": false,
+          "type": "String",
+          "count": 1,
+          "samples": {
+            "values": [
+              "true"
+            ],
+            "is_exaustive": true
+          },
+          "semantic_extractor": {
+            "Boolean": 1
+          },
+          "min_max_length": {
+            "min": 4,
+            "max": 4
+          }
+        },
+        "@name": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": false,
+          "may_be_duplicate": false,
+          "type": "String",
+          "count": 20,
+          "samples": {
+            "values": [
+              "Contact",
+              "Creator",
+              "Curation",
+              "Resource",
+              "ResourceName",
+              "Validation"
+            ],
+            "is_exaustive": false
+          },
+          "min_max_length": {
+            "min": 4,
+            "max": 14
+          }
+        },
+        "annotation": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": true,
+          "may_be_duplicate": false,
+          "type": "Struct",
+          "fields": {
+            "documentation": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": true,
+              "type": "Struct",
+              "fields": {
+                "$text": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 24,
+                  "samples": {
+                    "values": [
+                      "Any entity or component of a VO application that is\n           describable and identifiable by an IVOA Identifier.",
+                      "Information allowing establishing contact, e.g., for purposes\n          of support.",
+                      "Information regarding the general curation of a resource",
+                      "The entity (e.g. person or organisation) primarily responsible \n            for creating something",
+                      "The name of a potentially registered resource.  That is, the entity\n         referred to may have an associated identifier.",
+                      "a validation stamp combining a validation level and the ID of \n         the validator."
+                    ],
+                    "is_exaustive": false
+                  },
+                  "min_max_length": {
+                    "min": 37,
+                    "max": 355
+                  }
+                }
+              },
+              "context": {
+                "count": 24
+              }
+            }
+          },
+          "context": {
+            "count": 17
+          }
+        },
+        "attribute": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": true,
+          "may_be_duplicate": true,
+          "type": "Struct",
+          "fields": {
+            "@name": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "String",
+              "count": 10,
+              "samples": {
+                "values": [
+                  "created",
+                  "ivo-id",
+                  "standardID",
+                  "status",
+                  "updated",
+                  "version"
+                ],
+                "is_exaustive": false
+              },
+              "min_max_length": {
+                "min": 4,
+                "max": 10
+              }
+            },
+            "@type": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": true,
+              "may_be_duplicate": false,
+              "type": "String",
+              "count": 9,
+              "samples": {
+                "values": [
+                  "vr:IdentifierURI",
+                  "vr:UTCTimestamp",
+                  "xs:NMTOKEN",
+                  "xs:anyURI",
+                  "xs:string",
+                  "xs:token"
+                ],
+                "is_exaustive": true
+              },
+              "min_max_length": {
+                "min": 8,
+                "max": 16
+              }
+            },
+            "@use": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": true,
+              "may_be_duplicate": false,
+              "type": "String",
+              "count": 3,
+              "samples": {
+                "values": [
+                  "required"
+                ],
+                "is_exaustive": true
+              },
+              "min_max_length": {
+                "min": 8,
+                "max": 8
+              }
+            },
+            "annotation": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "documentation": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": true,
+                  "type": "Struct",
+                  "fields": {
+                    "$text": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": false,
+                      "may_be_duplicate": false,
+                      "type": "String",
+                      "count": 15,
+                      "samples": {
+                        "values": [
+                          "An IVOA identifier for the contact (typically when it is\n             an organization).",
+                          "The UTC date and time this resource metadata description\n              was created.",
+                          "The UTC date this resource metadata description was last updated.",
+                          "The VOResource XML schema version \n               against which this instance was written.\n               Implementors should set this to the value of the version\n               attribute of their schema's root (xs:schema) element.\n               Clients may assume version 1.0 if this attribute is \n               missing.",
+                          "This timestamp must not be in the future.  This time is\n              not required to be accurate; it should be at least\n              accurate to the day.  Any non-significant time fields\n              should be set to zero.",
+                          "a tag indicating whether this resource is believed to be still\n              actively maintained."
+                        ],
+                        "is_exaustive": false
+                      },
+                      "min_max_length": {
+                        "min": 40,
+                        "max": 384
+                      }
+                    }
+                  },
+                  "context": {
+                    "count": 15
+                  }
+                }
+              },
+              "context": {
+                "count": 10
+              }
+            },
+            "simpleType": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": true,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "restriction": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "Struct",
+                  "fields": {
+                    "@base": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": false,
+                      "may_be_duplicate": false,
+                      "type": "String",
+                      "count": 1,
+                      "samples": {
+                        "values": [
+                          "xs:string"
+                        ],
+                        "is_exaustive": true
+                      },
+                      "min_max_length": {
+                        "min": 9,
+                        "max": 9
+                      }
+                    },
+                    "enumeration": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": false,
+                      "may_be_duplicate": true,
+                      "type": "Struct",
+                      "fields": {
+                        "@value": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "String",
+                          "count": 3,
+                          "samples": {
+                            "values": [
+                              "active",
+                              "deleted",
+                              "inactive"
+                            ],
+                            "is_exaustive": true
+                          },
+                          "min_max_length": {
+                            "min": 6,
+                            "max": 8
+                          }
+                        },
+                        "annotation": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "Struct",
+                          "fields": {
+                            "documentation": {
+                              "may_be_null": false,
+                              "may_be_normal": true,
+                              "may_be_missing": false,
+                              "may_be_duplicate": false,
+                              "type": "Struct",
+                              "fields": {
+                                "$text": {
+                                  "may_be_null": false,
+                                  "may_be_normal": true,
+                                  "may_be_missing": false,
+                                  "may_be_duplicate": false,
+                                  "type": "String",
+                                  "count": 3,
+                                  "samples": {
+                                    "values": [
+                                      "resource is apparently not being maintained at the present.",
+                                      "resource is believed to be currently maintained, and its\n                      description is up to date (default).",
+                                      "resource publisher has explicitly deleted the resource."
+                                    ],
+                                    "is_exaustive": true
+                                  },
+                                  "min_max_length": {
+                                    "min": 55,
+                                    "max": 115
+                                  }
+                                }
+                              },
+                              "context": {
+                                "count": 3
+                              }
+                            }
+                          },
+                          "context": {
+                            "count": 3
+                          }
+                        }
+                      },
+                      "context": {
+                        "count": 3
+                      }
+                    }
+                  },
+                  "context": {
+                    "count": 1
+                  }
+                }
+              },
+              "context": {
+                "count": 1
+              }
+            }
+          },
+          "context": {
+            "count": 10
+          }
+        },
+        "complexContent": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": true,
+          "may_be_duplicate": false,
+          "type": "Struct",
+          "fields": {
+            "extension": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "@base": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 4,
+                  "samples": {
+                    "values": [
+                      "vr:Interface",
+                      "vr:Resource"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "min_max_length": {
+                    "min": 11,
+                    "max": 12
+                  }
+                },
+                "sequence": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "Struct",
+                  "fields": {
+                    "element": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": true,
+                      "may_be_duplicate": true,
+                      "type": "Struct",
+                      "fields": {
+                        "@maxOccurs": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "String",
+                          "count": 5,
+                          "samples": {
+                            "values": [
+                              "unbounded"
+                            ],
+                            "is_exaustive": true
+                          },
+                          "min_max_length": {
+                            "min": 9,
+                            "max": 9
+                          }
+                        },
+                        "@minOccurs": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "String",
+                          "count": 5,
+                          "samples": {
+                            "values": [
+                              "0"
+                            ],
+                            "is_exaustive": true
+                          },
+                          "semantic_extractor": {
+                            "Integer": 5
+                          },
+                          "min_max_length": {
+                            "min": 1,
+                            "max": 1
+                          }
+                        },
+                        "@name": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "String",
+                          "count": 5,
+                          "samples": {
+                            "values": [
+                              "capability",
+                              "facility",
+                              "instrument",
+                              "rights",
+                              "wsdlURL"
+                            ],
+                            "is_exaustive": true
+                          },
+                          "min_max_length": {
+                            "min": 6,
+                            "max": 10
+                          }
+                        },
+                        "@type": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "String",
+                          "count": 5,
+                          "samples": {
+                            "values": [
+                              "vr:Capability",
+                              "vr:ResourceName",
+                              "vr:Rights",
+                              "xs:anyURI"
+                            ],
+                            "is_exaustive": true
+                          },
+                          "min_max_length": {
+                            "min": 9,
+                            "max": 15
+                          }
+                        },
+                        "annotation": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "Struct",
+                          "fields": {
+                            "appinfo": {
+                              "may_be_null": false,
+                              "may_be_normal": true,
+                              "may_be_missing": true,
+                              "may_be_duplicate": false,
+                              "type": "Struct",
+                              "fields": {
+                                "dcterm": {
+                                  "may_be_null": false,
+                                  "may_be_normal": true,
+                                  "may_be_missing": false,
+                                  "may_be_duplicate": true,
+                                  "type": "Struct",
+                                  "fields": {
+                                    "$text": {
+                                      "may_be_null": false,
+                                      "may_be_normal": true,
+                                      "may_be_missing": false,
+                                      "may_be_duplicate": false,
+                                      "type": "String",
+                                      "count": 4,
+                                      "samples": {
+                                        "values": [
+                                          "Rights",
+                                          "Subject",
+                                          "Subject.Instrument"
+                                        ],
+                                        "is_exaustive": true
+                                      },
+                                      "min_max_length": {
+                                        "min": 6,
+                                        "max": 18
+                                      }
+                                    }
+                                  },
+                                  "context": {
+                                    "count": 4
+                                  }
+                                }
+                              },
+                              "context": {
+                                "count": 3
+                              }
+                            },
+                            "documentation": {
+                              "may_be_null": false,
+                              "may_be_normal": true,
+                              "may_be_missing": false,
+                              "may_be_duplicate": true,
+                              "type": "Struct",
+                              "fields": {
+                                "$text": {
+                                  "may_be_null": false,
+                                  "may_be_normal": true,
+                                  "may_be_missing": false,
+                                  "may_be_duplicate": false,
+                                  "type": "String",
+                                  "count": 9,
+                                  "samples": {
+                                    "values": [
+                                      "Information about rights held in and over the resource.",
+                                      "Mainly for compatibility with DataCite, this element\n                       is repeatable.  Resource record authors are advised\n                       that within the Virtual Observatory clients will\n                       typically only display and/or use the rights\n                       element occurring first and ignore later elements.",
+                                      "This describes a general function of the\n                        service, usually in terms of a standard\n                        service protocol (e.g. SIA), but not\n                        necessarily so.",
+                                      "a description of a general capability of the\n                        service and how to use it.",
+                                      "the Instrument used to collect the data contain or \n                       managed by a resource.",
+                                      "the observatory or facility used to collect the data \n                       contained or managed by this resource."
+                                    ],
+                                    "is_exaustive": false
+                                  },
+                                  "min_max_length": {
+                                    "min": 55,
+                                    "max": 341
+                                  }
+                                }
+                              },
+                              "context": {
+                                "count": 9
+                              }
+                            }
+                          },
+                          "context": {
+                            "count": 5
+                          }
+                        }
+                      },
+                      "context": {
+                        "count": 5
+                      }
+                    }
+                  },
+                  "context": {
+                    "count": 4
+                  }
+                }
+              },
+              "context": {
+                "count": 4
+              }
+            }
+          },
+          "context": {
+            "count": 4
+          }
+        },
+        "sequence": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": true,
+          "may_be_duplicate": false,
+          "type": "Struct",
+          "fields": {
+            "element": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": true,
+              "may_be_duplicate": true,
+              "type": "Struct",
+              "fields": {
+                "@maxOccurs": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": true,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 19,
+                  "samples": {
+                    "values": [
+                      "1",
+                      "unbounded"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "semantic_extractor": {
+                    "Integer": 1
+                  },
+                  "min_max_length": {
+                    "min": 1,
+                    "max": 9
+                  }
+                },
+                "@minOccurs": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": true,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 25,
+                  "samples": {
+                    "values": [
+                      "0",
+                      "1"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "semantic_extractor": {
+                    "Integer": 25
+                  },
+                  "min_max_length": {
+                    "min": 1,
+                    "max": 1
+                  }
+                },
+                "@name": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 37,
+                  "samples": {
+                    "values": [
+                      "altIdentifier",
+                      "curation",
+                      "identifier",
+                      "shortName",
+                      "title",
+                      "validationLevel"
+                    ],
+                    "is_exaustive": false
+                  },
+                  "min_max_length": {
+                    "min": 4,
+                    "max": 16
+                  }
+                },
+                "@type": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 37,
+                  "samples": {
+                    "values": [
+                      "vr:Curation",
+                      "vr:IdentifierURI",
+                      "vr:ShortName",
+                      "vr:Validation",
+                      "xs:anyURI",
+                      "xs:token"
+                    ],
+                    "is_exaustive": false
+                  },
+                  "min_max_length": {
+                    "min": 7,
+                    "max": 17
+                  }
+                },
+                "annotation": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "Struct",
+                  "fields": {
+                    "appinfo": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": true,
+                      "may_be_duplicate": false,
+                      "type": "Struct",
+                      "fields": {
+                        "dcterm": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": true,
+                          "type": "Struct",
+                          "fields": {
+                            "$text": {
+                              "may_be_null": false,
+                              "may_be_normal": true,
+                              "may_be_missing": false,
+                              "may_be_duplicate": false,
+                              "type": "String",
+                              "count": 12,
+                              "samples": {
+                                "values": [
+                                  "Contributor",
+                                  "Creator",
+                                  "Date",
+                                  "Identifier",
+                                  "Publisher",
+                                  "Title"
+                                ],
+                                "is_exaustive": false
+                              },
+                              "min_max_length": {
+                                "min": 4,
+                                "max": 20
+                              }
+                            }
+                          },
+                          "context": {
+                            "count": 12
+                          }
+                        }
+                      },
+                      "context": {
+                        "count": 11
+                      }
+                    },
+                    "documentation": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": false,
+                      "may_be_duplicate": true,
+                      "type": "Struct",
+                      "fields": {
+                        "$text": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "String",
+                          "count": 60,
+                          "samples": {
+                            "values": [
+                              "A numeric grade describing the quality of the\n                  resource description, when applicable, \n                  to be used to indicate the confidence an end-user\n                  can put in the resource as part of a VO application\n                  or research study.",
+                              "A short name or abbreviation given to the resource.",
+                              "Note that when this resource is a Service, this\n                  grade applies to the core set of metadata.\n                  Capability and interface metadata, as well as the\n                  compliance of the service with the interface\n                  standard, is rated by validationLevel tag in the \n                  capability element (see the vr:Service complex\n                  type).",
+                              "See vr:Validation for an explanation of the\n                  allowed levels.",
+                              "This name will be used where brief annotations for\n                 the resource name are required.  Applications may \n                 use to refer to this resource in a compact display.",
+                              "the full name given to the resource"
+                            ],
+                            "is_exaustive": false
+                          },
+                          "min_max_length": {
+                            "min": 25,
+                            "max": 681
+                          }
+                        }
+                      },
+                      "context": {
+                        "count": 60
+                      }
+                    }
+                  },
+                  "context": {
+                    "count": 37
+                  }
+                }
+              },
+              "context": {
+                "count": 37
+              }
+            }
+          },
+          "context": {
+            "count": 9
+          }
+        },
+        "simpleContent": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": true,
+          "may_be_duplicate": false,
+          "type": "Struct",
+          "fields": {
+            "extension": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "@base": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 7,
+                  "samples": {
+                    "values": [
+                      "vr:UTCDateTime",
+                      "vr:ValidationLevel",
+                      "xs:anyURI",
+                      "xs:token"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "min_max_length": {
+                    "min": 8,
+                    "max": 18
+                  }
+                },
+                "attribute": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "Struct",
+                  "fields": {
+                    "@default": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": true,
+                      "may_be_duplicate": false,
+                      "type": "String",
+                      "count": 1,
+                      "samples": {
+                        "values": [
+                          "representative"
+                        ],
+                        "is_exaustive": true
+                      },
+                      "min_max_length": {
+                        "min": 14,
+                        "max": 14
+                      }
+                    },
+                    "@name": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": false,
+                      "may_be_duplicate": false,
+                      "type": "String",
+                      "count": 7,
+                      "samples": {
+                        "values": [
+                          "format",
+                          "ivo-id",
+                          "rightsURI",
+                          "role",
+                          "use",
+                          "validatedBy"
+                        ],
+                        "is_exaustive": false
+                      },
+                      "min_max_length": {
+                        "min": 3,
+                        "max": 11
+                      }
+                    },
+                    "@type": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": true,
+                      "may_be_duplicate": false,
+                      "type": "String",
+                      "count": 6,
+                      "samples": {
+                        "values": [
+                          "vr:IdentifierURI",
+                          "xs:anyURI",
+                          "xs:string",
+                          "xs:token"
+                        ],
+                        "is_exaustive": true
+                      },
+                      "min_max_length": {
+                        "min": 8,
+                        "max": 16
+                      }
+                    },
+                    "@use": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": true,
+                      "may_be_duplicate": false,
+                      "type": "String",
+                      "count": 1,
+                      "samples": {
+                        "values": [
+                          "required"
+                        ],
+                        "is_exaustive": true
+                      },
+                      "min_max_length": {
+                        "min": 8,
+                        "max": 8
+                      }
+                    },
+                    "annotation": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": false,
+                      "may_be_duplicate": false,
+                      "type": "Struct",
+                      "fields": {
+                        "documentation": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": true,
+                          "type": "Struct",
+                          "fields": {
+                            "$text": {
+                              "may_be_null": false,
+                              "may_be_normal": true,
+                              "may_be_missing": false,
+                              "may_be_duplicate": false,
+                              "type": "String",
+                              "count": 11,
+                              "samples": {
+                                "values": [
+                                  "A string indicating what the date refers to.",
+                                  "Note that this date refers to the resource; dates describing\n                 the metadata description of the resource are handled by\n                 the “created” and “updated” attributes of the Resource \n                 element.",
+                                  "The IVOA ID of the registry or organisation that\n               assigned the validation level.",
+                                  "The IVOA identifier for the resource referred to.",
+                                  "The reference format.  Recognized values include “bibcode”, \n                 referring to a standard astronomical bibcode \n                 (http://cdsweb.u-strasbg.fr/simbad/refcode.html).",
+                                  "The value of role should be taken from the vocabulary \n               \tmaintained at\n               \thttp://www.ivoa.net/rdf/voresource/date_role.\n               \tThis includes the traditional and deprecated strings\n                “creation”, indicating the date that the resource \n                itself was created, and “update”, indicating when the\n                resource was updated last, and the default value,\n                “representative”, meaning the date is a rough \n                representation of the time coverage of the resource.\n                The preferred terms from that vocabulary are the DataCite\n                Metadata terms.   It is expected that the vocabulary will \n                be kept synchronous with the corresponding list of terms\n                in the DataCite Metadata schema."
+                                ],
+                                "is_exaustive": false
+                              },
+                              "min_max_length": {
+                                "min": 30,
+                                "max": 833
+                              }
+                            }
+                          },
+                          "context": {
+                            "count": 11
+                          }
+                        }
+                      },
+                      "context": {
+                        "count": 7
+                      }
+                    },
+                    "simpleType": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": true,
+                      "may_be_duplicate": false,
+                      "type": "Struct",
+                      "fields": {
+                        "restriction": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "Struct",
+                          "fields": {
+                            "@base": {
+                              "may_be_null": false,
+                              "may_be_normal": true,
+                              "may_be_missing": false,
+                              "may_be_duplicate": false,
+                              "type": "String",
+                              "count": 1,
+                              "samples": {
+                                "values": [
+                                  "xs:NMTOKEN"
+                                ],
+                                "is_exaustive": true
+                              },
+                              "min_max_length": {
+                                "min": 10,
+                                "max": 10
+                              }
+                            },
+                            "enumeration": {
+                              "may_be_null": false,
+                              "may_be_normal": true,
+                              "may_be_missing": false,
+                              "may_be_duplicate": true,
+                              "type": "Struct",
+                              "fields": {
+                                "@value": {
+                                  "may_be_null": false,
+                                  "may_be_normal": true,
+                                  "may_be_missing": false,
+                                  "may_be_duplicate": false,
+                                  "type": "String",
+                                  "count": 3,
+                                  "samples": {
+                                    "values": [
+                                      "base",
+                                      "dir",
+                                      "full"
+                                    ],
+                                    "is_exaustive": true
+                                  },
+                                  "min_max_length": {
+                                    "min": 3,
+                                    "max": 4
+                                  }
+                                },
+                                "annotation": {
+                                  "may_be_null": false,
+                                  "may_be_normal": true,
+                                  "may_be_missing": false,
+                                  "may_be_duplicate": false,
+                                  "type": "Struct",
+                                  "fields": {
+                                    "documentation": {
+                                      "may_be_null": false,
+                                      "may_be_normal": true,
+                                      "may_be_missing": false,
+                                      "may_be_duplicate": false,
+                                      "type": "Struct",
+                                      "fields": {
+                                        "$text": {
+                                          "may_be_null": false,
+                                          "may_be_normal": true,
+                                          "may_be_missing": false,
+                                          "may_be_duplicate": false,
+                                          "type": "String",
+                                          "count": 3,
+                                          "samples": {
+                                            "values": [
+                                              "Assume URL points to a directory that will return a listing\n                     of files.",
+                                              "Assume a base URL--that is, one requiring an extra portion\n                     to be appended before being invoked.",
+                                              "Assume a full URL--that is, one that can be invoked \n                     directly without alteration.  This usually returns a \n                     single document or file."
+                                            ],
+                                            "is_exaustive": true
+                                          },
+                                          "min_max_length": {
+                                            "min": 90,
+                                            "max": 173
+                                          }
+                                        }
+                                      },
+                                      "context": {
+                                        "count": 3
+                                      }
+                                    }
+                                  },
+                                  "context": {
+                                    "count": 3
+                                  }
+                                }
+                              },
+                              "context": {
+                                "count": 3
+                              }
+                            }
+                          },
+                          "context": {
+                            "count": 1
+                          }
+                        }
+                      },
+                      "context": {
+                        "count": 1
+                      }
+                    }
+                  },
+                  "context": {
+                    "count": 7
+                  }
+                }
+              },
+              "context": {
+                "count": 7
+              }
+            }
+          },
+          "context": {
+            "count": 7
+          }
+        }
+      },
+      "context": {
+        "count": 20
+      }
+    },
+    "simpleType": {
+      "may_be_null": false,
+      "may_be_normal": true,
+      "may_be_missing": false,
+      "may_be_duplicate": true,
+      "type": "Struct",
+      "fields": {
+        "@name": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": false,
+          "may_be_duplicate": false,
+          "type": "String",
+          "count": 7,
+          "samples": {
+            "values": [
+              "AuthorityID",
+              "IdentifierURI",
+              "ResourceKey",
+              "UTCDateTime",
+              "UTCTimestamp",
+              "ValidationLevel"
+            ],
+            "is_exaustive": false
+          },
+          "min_max_length": {
+            "min": 9,
+            "max": 15
+          }
+        },
+        "annotation": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": true,
+          "may_be_duplicate": false,
+          "type": "Struct",
+          "fields": {
+            "documentation": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": true,
+              "type": "Struct",
+              "fields": {
+                "$text": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 9,
+                  "samples": {
+                    "values": [
+                      "A date stamp that can be given to a precision of either a\n           day (type xs:date) or seconds (type xs:dateTime).  Where only a\n           date is given, it is to be interpreted as the span of the day \n           on the UTC timezone if such distinctions are relevant.",
+                      "A reference to a registry record.",
+                      "A timestamp that is compliant with ISO8601 and fixes\n           the timezone indicator, if present, to \"Z\" (UTC).  VOResource\n           writers should always include the timezone marker.  VOResource\n           readers must interpret timestamps without a timezone marker as\n           UTC.",
+                      "See the RM (v1.1, section 4) for more guidance on the use of\n         these values.",
+                      "The allowed values for describing the resource descriptions\n         and interfaces.",
+                      "This type should only be used if what is referenced\n            must actually be a true Registry record; vr:IdentifierURI\n            does not allow query or fragment parts and is hence\n            not suitable for everything defined by IVOA Identifiers,\n            in particular not standard keys (which are used for versions\n            of standards, for instance) or dataset identifiers.\n\n            When something does not need to be locked down to a\n            reference to a single registry record, xs:anyURI should\n            be used."
+                    ],
+                    "is_exaustive": false
+                  },
+                  "min_max_length": {
+                    "min": 33,
+                    "max": 545
+                  }
+                }
+              },
+              "context": {
+                "count": 9
+              }
+            }
+          },
+          "context": {
+            "count": 5
+          }
+        },
+        "restriction": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": true,
+          "may_be_duplicate": false,
+          "type": "Struct",
+          "fields": {
+            "@base": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "String",
+              "count": 6,
+              "samples": {
+                "values": [
+                  "xs:anyURI",
+                  "xs:dateTime",
+                  "xs:integer",
+                  "xs:token"
+                ],
+                "is_exaustive": true
+              },
+              "min_max_length": {
+                "min": 8,
+                "max": 11
+              }
+            },
+            "enumeration": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": true,
+              "may_be_duplicate": true,
+              "type": "Struct",
+              "fields": {
+                "@value": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 5,
+                  "samples": {
+                    "values": [
+                      "0",
+                      "1",
+                      "2",
+                      "3",
+                      "4"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "semantic_extractor": {
+                    "Integer": 5
+                  },
+                  "min_max_length": {
+                    "min": 1,
+                    "max": 1
+                  }
+                },
+                "annotation": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "Struct",
+                  "fields": {
+                    "documentation": {
+                      "may_be_null": false,
+                      "may_be_normal": true,
+                      "may_be_missing": false,
+                      "may_be_duplicate": true,
+                      "type": "Struct",
+                      "fields": {
+                        "$text": {
+                          "may_be_null": false,
+                          "may_be_normal": true,
+                          "may_be_missing": false,
+                          "may_be_duplicate": false,
+                          "type": "String",
+                          "count": 6,
+                          "samples": {
+                            "values": [
+                              "In addition to meeting the level 0 definition, the\n              resource description conforms syntactically to this\n              standard and to the encoding scheme used.",
+                              "In addition to meeting the level 1 definition, the\n              resource description refers to an existing resource that\n              has demonstrated to be functionally compliant.",
+                              "In addition to meeting the level 2 definition, the\n              resource description has been inspected by a human and\n              judged to comply semantically to this standard as well\n              as meeting any additional minimum quality criteria (e.g.,\n              providing values for important but non-required\n              metadata) set by the human inspector.",
+                              "In addition to meeting the level 3 definition, the\n              resource description meets additional quality criteria\n              set by the human inspector and is therefore considered\n              an excellent description of the resource. Consequently,\n              the resource is expected to operate well as part of a\n              VO application or research study.",
+                              "The resource has a description that is stored in a\n              registry. This level does not imply a compliant\n              description.",
+                              "When the resource is a service, it is considered to exist\n              and functionally compliant if use of the\n              service accessURL responds without error when used as\n              intended by the resource. If the service is a standard\n              one, it must also demonstrate the response is syntactically \n              compliant with the service standard in order to be\n              considered functionally compliant. If the resource is\n              not a service, then the ReferenceURL must be shown to\n              return a document without error."
+                            ],
+                            "is_exaustive": true
+                          },
+                          "min_max_length": {
+                            "min": 139,
+                            "max": 572
+                          }
+                        }
+                      },
+                      "context": {
+                        "count": 6
+                      }
+                    }
+                  },
+                  "context": {
+                    "count": 5
+                  }
+                }
+              },
+              "context": {
+                "count": 5
+              }
+            },
+            "maxLength": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": true,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "@value": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 1,
+                  "samples": {
+                    "values": [
+                      "16"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "semantic_extractor": {
+                    "Integer": 1
+                  },
+                  "min_max_length": {
+                    "min": 2,
+                    "max": 2
+                  }
+                }
+              },
+              "context": {
+                "count": 1
+              }
+            },
+            "pattern": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": true,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "@value": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 4,
+                  "samples": {
+                    "values": [
+                      "[\\w\\d\\-_\\.!~\\*'\\(\\)\\+=]+(/[\\w\\d\\-_\\.!~\\*'\\(\\)\\+=]+)*",
+                      "[\\w\\d][\\w\\d\\-_\\.!~\\*'\\(\\)\\+=]{2,}",
+                      "\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?Z?",
+                      "ivo://[\\w\\d][\\w\\d\\-_\\.!~\\*'\\(\\)\\+=]{2,}(/[\\w\\d\\-_\\.!~\\*'\\(\\)\\+=]+(/[\\w\\d\\-_\\.!~\\*'\\(\\)\\+=]+)*)?"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "min_max_length": {
+                    "min": 33,
+                    "max": 95
+                  }
+                }
+              },
+              "context": {
+                "count": 4
+              }
+            },
+            "whiteSpace": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": true,
+              "may_be_duplicate": false,
+              "type": "Struct",
+              "fields": {
+                "@value": {
+                  "may_be_null": false,
+                  "may_be_normal": true,
+                  "may_be_missing": false,
+                  "may_be_duplicate": false,
+                  "type": "String",
+                  "count": 1,
+                  "samples": {
+                    "values": [
+                      "collapse"
+                    ],
+                    "is_exaustive": true
+                  },
+                  "min_max_length": {
+                    "min": 8,
+                    "max": 8
+                  }
+                }
+              },
+              "context": {
+                "count": 1
+              }
+            }
+          },
+          "context": {
+            "count": 6
+          }
+        },
+        "union": {
+          "may_be_null": false,
+          "may_be_normal": true,
+          "may_be_missing": true,
+          "may_be_duplicate": false,
+          "type": "Struct",
+          "fields": {
+            "@memberTypes": {
+              "may_be_null": false,
+              "may_be_normal": true,
+              "may_be_missing": false,
+              "may_be_duplicate": false,
+              "type": "String",
+              "count": 1,
+              "samples": {
+                "values": [
+                  "xs:date vr:UTCTimestamp"
+                ],
+                "is_exaustive": true
+              },
+              "min_max_length": {
+                "min": 23,
+                "max": 23
+              }
+            }
+          },
+          "context": {
+            "count": 1
+          }
+        }
+      },
+      "context": {
+        "count": 7
+      }
+    }
+  },
+  "context": {
+    "count": 1
+  }
+}

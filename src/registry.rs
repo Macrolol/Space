@@ -1,15 +1,11 @@
 extern crate reqwest;
 use std::boxed::Box;
-use quick_xml::reader::Reader;
-use quick_xml::events::Event;
-use quick_xml::name::QName;
+
 
 const REGTAP_URL: &str = "http://reg.g-vo.org/tap";
 const REGTAP_CAPABILITIES_ENDPOINT: &str = "capabilities";
 
-pub struct RegTapCapability {
-    
-}
+
 
 pub struct RegTapService {
     pub url: String,
