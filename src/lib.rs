@@ -1,11 +1,7 @@
-pub mod vo_resource;
 pub (crate) mod registry;
-pub (crate) mod xml;
-
-use xml::{XmlDocument};
 use quick_xml::reader::Reader;
 
-pub trait XmlEndpoint<'a>{
+/* pub trait XmlEndpoint<'a>{
     fn get_string_response(&'a mut self) -> Result<&'a str, Box<dyn std::error::Error>>;
     fn get_xml_response(&'a mut self) -> Result<XmlDocument<'a>, Box<dyn std::error::Error>> {
         let response = self.get_string_response()?;
@@ -14,7 +10,7 @@ pub trait XmlEndpoint<'a>{
         Ok(doc.to_owned())
     }
 }
-
+ */
 
 
 #[cfg(test)]
@@ -38,7 +34,7 @@ mod tests {
             }
         }
     }
-
+/* 
     impl XmlEndpoint<'_> for XmlEndpointImpl {
         fn get_string_response(&mut self) -> Result<&str, Box<dyn std::error::Error>> {
             let client = reqwest::blocking::Client::new();
@@ -235,6 +231,6 @@ mod tests {
             get_subtree_by_name_test(test).await;
         }
     }
-
+*/
 
 }

@@ -1,7 +1,9 @@
 /errors
 /source
 /.vscode
+/debug
 
+*.log
 
 # Added by cargo
 
